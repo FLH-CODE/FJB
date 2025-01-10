@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sliders</title>
+    <style>
+        .slider-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .slider {
+            margin-right: 10px;
+        }
+        .max-input {
+            margin-left: 10px;
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Maximum Value: <span id="maxTotalValue">1500</span></h1>
+    <div id="sliders">
+        <div class="slider-container">
+            <input type="range" min="0" max="329" value="50" class="slider" id="slider1" oninput="updateValue(1)">
+            <span id="value1">50</span>
+            <input type="number" class="max-input" id="max1" value="329" oninput="updateMax(1)">
+        </div>
+        <div class="slider-container">
+            <input type="range" min="0" max="550" value="25" class="slider" id="slider2" oninput="updateValue(2)">
+            <span id="value2">25</span>
+            <input type="number" class="max-input" id="max2" value="550" oninput="updateMax(2)">
+        </div>
+        <div class="slider-container">
+            <input type="range" min="0" max="700" value="25" class="slider" id="slider3" oninput="updateValue(3)">
+            <span id="value3">25</span>
+            <input type="number" class="max-input" id="max3" value="700" oninput="updateMax(3)">
+        </div>
+        <div class="slider-container">
+            <input type="range" min="0" max="1500" value="0" class="slider" id="slider4" oninput="updateValue(4)">
+            <span id="value4">0</span>
+            <input type="number" class="max-input" id="max4" value="1500" oninput="updateMax(4)">
+        </div>
+    </div>
+    <h2>Total Value: <span id="totalValue">100</span></h2>
+
+    <script>
+        function updateValue(sliderNumber) {
+            const sliders = [];
+            const values = [];
+            let totalValue = 0;
+            const maxTotalValue = parseInt(document.getElementById('max4').value);
+
+            for (let i = 1; i <= 4; i++) {
+                sliders[i] = document.getElementById('slider' + i);
+                values[i] = parseInt(sliders[i].value);
+                totalValue += values[i];
+            }
+
+            if (totalValue > maxTotalValue) {
+                let excess = totalValue - maxTotalValue;
+                for (let i = 4; i > 0; i--) {
+                    if (i !== sliderNumber && values[i] > 0) {
+                        let decrease = Math.min(values[i], excess);
+                        values[i] -= decrease;
+                        sliders[i].value = values[i];
+                        excess -= decrease;
+                        if (excess <= 0) break;
+                    }
+                }
+                if (excess > 0) {
+                    sliders[sliderNumber].value = values[sliderNumber] - excess;
+                    values[sliderNumber] -= excess;
+                }
+            }
+
+            totalValue = values.reduce((a, b) => a + b, 0);
+            document.getElementById('totalValue').textContent = totalValue;
+
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('value' + i).textContent = sliders[i].value;
+            }
+        }
+
+        function updateMax(sliderNumber) {
+            const slider = document.getElementById('slider' + sliderNumber);
+            const maxInput = document.getElementById('max' + sliderNumber);
+            slider.max = maxInput.value;
+
+            if (sliderNumber === 4) {
+                document.getElementById('maxTotalValue').textContent = maxInput.value;
+            }
+        }
+    </script>
+</body>
+</html>
