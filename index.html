@@ -26,6 +26,11 @@
         .slider {
             margin-right: 10px;
         }
+        .slider-label {
+            width: 100px; /* Adjust width as needed */
+            text-align: right;
+            margin-right: 10px;
+        }
         .max-input {
             margin-left: 10px;
             width: 50px;
@@ -38,40 +43,68 @@
             width: 40px; /* Adjust width as needed */
             text-align: right;
         }
+
+        .total-Occupancy {
+            display: inline-block;
+            width: 10px; /* Adjust width as needed */
+            text-align: right;
+        }
+
         h2 {
             font-size: 18px; /* Adjust the size as needed */
+            width: 200px; /* Adjust width as needed */
+            text-align: right;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .header-label {
+            width: 200px; /* Adjust width as needed */
+            margin-left: 180px;
+            text-align: right;
         }
 
     </style>
 </head>
 <body>
+    <div class="header-container">
+        <span class="header-label">Antal pers</span>
+    </div>
     <div id="sliders">
         <div class="slider-container">
+            <span class="slider-label">1-pers</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider1" oninput="updateValue(1)">
             <span class="value" id="value1">0%</span>
             <input type="number" class="max-input" id="max1" value="329" oninput="updateMax(1)">
             <span class="calculated-value" id="calculated1">0</span>
         </div>
         <div class="slider-container">
+            <span class="slider-label">2-pers</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider2" oninput="updateValue(2)">
             <span class="value" id="value2">0%</span>
             <input type="number" class="max-input" id="max2" value="550" oninput="updateMax(2)">
             <span class="calculated-value" id="calculated2">0</span>
         </div>
         <div class="slider-container">
+            <span class="slider-label">4-pers</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider3" oninput="updateValue(3)">
             <span class="value" id="value3">0%</span>
             <input type="number" class="max-input" id="max3" value="700" oninput="updateMax(3)">
             <span class="calculated-value" id="calculated3">0</span>
         </div>
         <div class="slider-container">
+            <span class="slider-label">Landskap</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider4" oninput="updateValue(4)">
             <span class="value" id="value4">0%</span>
             <input type="number" class="max-input" id="max4" value="1500" oninput="updateMax(4)">
             <span class="calculated-value" id="calculated4">0</span>
         </div>
     </div>
-    <h2>Beläggningsgrad: <span id="totalOccupancy">100%</span></h2>
+    <h2>Total: <span class= "total-Occupancy" id="totalOccupancy">100%</span></h2>
 
     <script>
         function updateValue(sliderNumber) {
