@@ -25,18 +25,57 @@
         }
         .slider {
             margin-right: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 5px;
+            background: rgb(232, 231, 231);
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            position: relative;
         }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: black;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: black;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .slider::before {
+            content: '';
+            height: 8px;
+            background: black;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
         .slider-label {
-            width: 100px; /* Adjust width as needed */
-            text-align: right;
-            margin-right: 10px;
+            width: 130px; /* Adjust width as needed */
+            text-align: left;
+            margin-left: 20px;
         }
         .max-input {
             margin-left: 10px;
             width: 50px;
         }
         .calculated-value {
-            margin-left: 10px;
+            margin-left: 20px;
         }
         .value {
             display: inline-block;
@@ -47,66 +86,86 @@
         .total-Occupancy {
             display: inline-block;
             width: 10px; /* Adjust width as needed */
-            text-align: right;
+            text-align: left;
+        }
+        .calculated-total {
+            font-size: 18px; /* Adjust the size as needed */
+            display: inline-block;
+            width: 10px; /* Adjust width as needed */
+            text-align: left;
+            margin-left: 135px;
         }
 
         h2 {
             font-size: 18px; /* Adjust the size as needed */
+            width: 300px; /* Adjust width as needed */
+            text-align: left;
+            margin-left: 150px;
+        }
+        .Antal-pers {
+            font-size: 18px; /* Adjust the size as needed */
             width: 200px; /* Adjust width as needed */
+            margin-left: 350px;
+            margin-bottom: 20px;
+            display: flex;
             text-align: right;
+        }
+        .Rubrik {
+            font-size: 30px; /* Adjust the size as needed */
+            width: 300px; /* Adjust width as needed */
+            margin-left: 20px;     
+            margin-top: 20px;
+            display: flex;
+            text-align: left;
         }
 
-        .header-container {
-            display: flex;
-            align-items: center;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-        .header-label {
+        .Under-rubrik {
+            font-size: 18px; /* Adjust the size as needed */
             width: 200px; /* Adjust width as needed */
-            margin-left: 180px;
-            text-align: right;
+            margin-left: 20px;     
+            margin-top: 10px;
+            display: flex;
+            text-align: left;
         }
 
     </style>
 </head>
 <body>
-    <div class="header-container">
-        <span class="header-label">Antal pers</span>
-    </div>
+    <span class="Rubrik">Kv Smultronet</span>
+        <span class="Under-rubrik">Antal kontorsplatser</span>
+        <span class="Antal-pers">Antal pers</span>
+
     <div id="sliders">
         <div class="slider-container">
-            <span class="slider-label">1-pers</span>
+            <span class="slider-label">1-personsrum</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider1" oninput="updateValue(1)">
             <span class="value" id="value1">0%</span>
-            <input type="number" class="max-input" id="max1" value="329" oninput="updateMax(1)">
             <span class="calculated-value" id="calculated1">0</span>
         </div>
         <div class="slider-container">
-            <span class="slider-label">2-pers</span>
+            <span class="slider-label">2-personsrum</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider2" oninput="updateValue(2)">
             <span class="value" id="value2">0%</span>
-            <input type="number" class="max-input" id="max2" value="550" oninput="updateMax(2)">
             <span class="calculated-value" id="calculated2">0</span>
         </div>
         <div class="slider-container">
-            <span class="slider-label">4-pers</span>
+            <span class="slider-label">4-personsrum</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider3" oninput="updateValue(3)">
             <span class="value" id="value3">0%</span>
-            <input type="number" class="max-input" id="max3" value="700" oninput="updateMax(3)">
             <span class="calculated-value" id="calculated3">0</span>
         </div>
         <div class="slider-container">
-            <span class="slider-label">Landskap</span>
+            <span class="slider-label">Öppet landskap</span>
             <input type="range" min="0" max="100" value="0" class="slider" id="slider4" oninput="updateValue(4)">
             <span class="value" id="value4">0%</span>
-            <input type="number" class="max-input" id="max4" value="1500" oninput="updateMax(4)">
             <span class="calculated-value" id="calculated4">0</span>
         </div>
     </div>
-    <h2>Total: <span class= "total-Occupancy" id="totalOccupancy">100%</span></h2>
+    <h2>Total: <span class="total-Occupancy" id="totalOccupancy">100%</span> <span class="calculated-total" id="calculatedTotal">0</span></h2>
 
     <script>
+        const maxValues = [329, 550, 700, 1500];
+
         function updateValue(sliderNumber) {
             const slider1 = document.getElementById('slider1');
             const slider2 = document.getElementById('slider2');
@@ -148,10 +207,23 @@
             document.getElementById('value3').textContent = slider3.value + '%';
             document.getElementById('value4').textContent = slider4.value + '%';
 
-            document.getElementById('calculated1').textContent = calculateValue(slider1.value, document.getElementById('max1').value);
-            document.getElementById('calculated2').textContent = calculateValue(slider2.value, document.getElementById('max2').value);
-            document.getElementById('calculated3').textContent = calculateValue(slider3.value, document.getElementById('max3').value);
-            document.getElementById('calculated4').textContent = calculateValue(slider4.value, document.getElementById('max4').value);
+            const calculated1 = calculateValue(slider1.value, maxValues[0]);
+            const calculated2 = calculateValue(slider2.value, maxValues[1]);
+            const calculated3 = calculateValue(slider3.value, maxValues[2]);
+            const calculated4 = calculateValue(slider4.value, maxValues[3]);
+
+            document.getElementById('calculated1').textContent = calculated1;
+            document.getElementById('calculated2').textContent = calculated2;
+            document.getElementById('calculated3').textContent = calculated3;
+            document.getElementById('calculated4').textContent = calculated4;
+
+            const totalCalculated = parseInt(calculated1) + parseInt(calculated2) + parseInt(calculated3) + parseInt(calculated4);
+            document.getElementById('calculatedTotal').textContent = totalCalculated;
+
+            updateSliderBackground(slider1);
+            updateSliderBackground(slider2);
+            updateSliderBackground(slider3);
+            updateSliderBackground(slider4);
         }
 
         function calculateValue(value, maxInputValue) {
@@ -160,9 +232,18 @@
 
         function updateMax(sliderNumber) {
             const slider = document.getElementById('slider' + sliderNumber);
-            const maxInput = document.getElementById('max' + sliderNumber);
             slider.max = 100; // Always set slider max to 100
         }
+
+        function updateSliderBackground(slider) {
+            const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(to right, black ${value}%, gray ${value}%)`;
+        }
+
+        document.querySelectorAll('.slider').forEach(slider => {
+            slider.addEventListener('input', () => updateSliderBackground(slider));
+            updateSliderBackground(slider); // Initialize background on page load
+        });
     </script>
 </body>
 </html>
